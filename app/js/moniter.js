@@ -71,3 +71,22 @@ function secondsToDhms(seconds) {
 function notifyUser(options) {
   new Notification(options.title, options)
 }
+
+// Check how much time has passed since notification
+function runNotify(frequency) {
+  if (localStorage.getItem('lastNotify') === null) {
+    // Store timestamp
+    localStorage.setItem('lastNotify', +new Date())
+    return true
+  }
+  const notifyTime = new Date(parseInt(localStorage.getItem('lastNotify')))
+  const now = new Date()
+  const diffTime = Math.abs(now - notifyTime)
+  const minutesPassed = Math.ceil(diffTime / (1000 * 60))
+
+  if (minutesPassed > frequency) {
+    return true
+  } else {
+    return false
+  }
+}
