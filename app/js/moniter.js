@@ -5,12 +5,7 @@ const mem = osu.mem
 const os = osu.os
 
 let cpuOverload = 5;
-
-notifyUser({
-  title: 'CPU Overload',
-  body: `CPU is over ${cpuOverload}`,
-  icon: path.join(__dirname, 'img', 'icon.png')
-})
+let alertFrequency = 1;
 
 //run every 2 seconds
 setInterval(() => {
@@ -25,6 +20,16 @@ setInterval(() => {
       document.getElementById('cpu-progress').style.background = 'red'
     } else {
       document.getElementById('cpu-progress').style.background = '#30c88b'
+    }
+
+    if (info >= cpuOverload && runNotify(alertFrequency)) {
+      notifyUser({
+        title: 'CPU Overload',
+        body: `CPU is over ${cpuOverload}`,
+        icon: path.join(__dirname, 'img', 'icon.png')
+      })
+
+      localStorage.setItem('lastNotify', +new Date())
     }
   })
 
